@@ -341,5 +341,16 @@ namespace Steamworks
 			SetSocketManager( t.Socket.Id, t );
 			return t;
 		}
+
+		public static SteamNetworkingAvailability InitAuthentication()
+		{
+			return Internal.InitAuthentication();
+		}
+
+		public static SteamNetworkingAvailability GetAuthenticationStatus()
+		{
+			var pDetails = new SteamNetAuthenticationStatus_t();
+			return Internal.GetAuthenticationStatus(ref pDetails);
+		}
 	}
 }
