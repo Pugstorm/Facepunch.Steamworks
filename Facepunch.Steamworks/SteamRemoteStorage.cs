@@ -98,6 +98,16 @@ namespace Steamworks
 		/// </summary>
 		public static bool FileDelete( string filename ) => Internal.FileDelete( filename );
 
+		/// <summary>
+		/// Begins a batch of write operations, where all operations should be treated as a single state change for
+		/// better reliability.
+		/// </summary>
+		public static bool BeginFileWriteBatch() => Internal.BeginFileWriteBatch();
+
+		/// <summary>
+		/// Ends the file write batch operation begun with BeginFileWriteBatch().
+		/// </summary>
+		public static bool EndFileWriteBatch() => Internal.EndFileWriteBatch();
 
 		/// <summary>
 		/// Gets the total number of quota bytes.
