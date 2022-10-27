@@ -150,9 +150,9 @@ namespace Steamworks
 		/// <summary>
 		/// Creates a new invisible lobby. Call <see cref="Lobby.SetPublic"/> to take it online.
 		/// </summary>
-		public static async Task<Lobby?> CreateLobbyAsync( int maxMembers = 100 )
+		public static async Task<Lobby?> CreateLobbyAsync( LobbyType lobbyType, int maxMembers = 100 )
 		{
-			var lobby = await Internal.CreateLobby( LobbyType.Invisible, maxMembers );
+			var lobby = await Internal.CreateLobby( lobbyType, maxMembers );
 			if ( !lobby.HasValue || lobby.Value.Result != Result.OK ) return null;
 
 			return new Lobby { Id = lobby.Value.SteamIDLobby };

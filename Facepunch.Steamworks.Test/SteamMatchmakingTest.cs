@@ -43,7 +43,7 @@ namespace Steamworks
 		[TestMethod]
 		public async Task CreateLobby()
 		{
-			var lobbyr = await SteamMatchmaking.CreateLobbyAsync( 32 );
+			var lobbyr = await SteamMatchmaking.CreateLobbyAsync( LobbyType.Private, 32 );
 			if ( !lobbyr.HasValue )
 			{
 				Assert.Fail();
@@ -77,7 +77,7 @@ namespace Steamworks
 				Console.WriteLine( $"[{lbby}] {member}: {message}" );
 			};
 
-			var lobbyr = await SteamMatchmaking.CreateLobbyAsync( 10 );
+			var lobbyr = await SteamMatchmaking.CreateLobbyAsync( LobbyType.Private, 10 );
 			if ( !lobbyr.HasValue )
 				Assert.Fail();
 

@@ -678,7 +678,7 @@ namespace Steamworks
 	//
 	// ELobbyType
 	//
-	internal enum LobbyType : int
+	public enum LobbyType : int
 	{
 		Private = 0,
 		FriendsOnly = 1,
