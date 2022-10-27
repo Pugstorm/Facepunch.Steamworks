@@ -129,6 +129,22 @@ namespace Steamworks
 
 		public static long LocalTimestamp => Internal.GetLocalTimestamp();
 
+		/// <summary>
+		/// Maximum amount of bytes to send in one packet (including protocol overhead)
+		/// </summary>
+		public static int MTUPacketSize
+		{
+			get => GetConfigInt( NetConfig.MTU_PacketSize );
+			set => SetConfigInt( NetConfig.MTU_PacketSize, value );
+		}
+
+		/// <summary>
+		/// Maximum amount of data bytes that can be sent in one package (excluding protocol overhead)
+		/// </summary>
+		public static int MTUDataSize
+		{
+			get => GetConfigInt( NetConfig.MTU_DataSize );
+		}
 
 		/// <summary>
 		/// [0 - 100] - Randomly discard N pct of packets.
