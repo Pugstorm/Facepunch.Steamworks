@@ -23,6 +23,6 @@ namespace Steamworks
 		/// <summary>
 		/// Received a message
 		/// </summary>
-		void OnMessage( IntPtr data, int size, long messageNum, long recvTime, int channel );
+		void OnMessage( IntPtr data, int size, long messageNum, long recvTime, int lane );
 	}
 }
