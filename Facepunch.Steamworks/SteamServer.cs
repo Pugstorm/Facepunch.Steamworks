@@ -78,14 +78,24 @@ namespace Steamworks
 
 			System.Environment.SetEnvironmentVariable( "SteamAppId", appid.ToString() );
 			System.Environment.SetEnvironmentVariable( "SteamGameId", appid.ToString() );
-			var secure = (int)(init.Secure ? 3 : 2);
+
+			if ( init.Secure && !init.Authenticated )
+			{
+				throw new System.Exception( "Secure implies Authenticated" );
+			}
+			
+			int serverMode = 1;
+			if ( init.Authenticated )
+			{
+				serverMode = init.Secure ? 3 : 2;
+			}
 
 			//
 			// Get other interfaces
 			//
-			if ( !SteamInternal.GameServer_Init( ipaddress, 0, init.GamePort, init.QueryPort, secure, init.VersionString ) )
+			if ( !SteamInternal.GameServer_Init( ipaddress, 0, init.GamePort, init.QueryPort, serverMode, init.VersionString ) )
 			{
-				throw new System.Exception( $"InitGameServer returned false ({ipaddress},{0},{init.GamePort},{init.QueryPort},{secure},\"{init.VersionString}\")" );
+				throw new System.Exception( $"InitGameServer returned false ({ipaddress},{0},{init.GamePort},{init.QueryPort},{serverMode},\"{init.VersionString}\")" );
 			}
 
 			//
@@ -281,6 +291,15 @@ namespace Steamworks
 		/// </summary>
 		public static SteamId SteamId => Internal.GetSteamID();
 
+		/// <summary>
+		/// Log onto Steam using a login token
+		/// </summary>
+		public static void LogOn(string loginToken)
+		{
+			Internal.LogOn(loginToken);
+			ForceHeartbeat();
+		}
+		
 		/// <summary>
 		/// Log onto Steam anonymously.
 		/// </summary>

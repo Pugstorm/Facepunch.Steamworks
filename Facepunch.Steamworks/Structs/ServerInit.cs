@@ -16,6 +16,7 @@ namespace Steamworks
         public IPAddress IpAddress;
         public ushort GamePort;
         public ushort QueryPort;
+        public bool Authenticated;
         public bool Secure;
 
         /// <summary>
@@ -48,6 +49,7 @@ namespace Steamworks
             GameDescription = gameDesc;
 			GamePort = 27015;
 			QueryPort = 27016;
+			Authenticated = true;
 			Secure = true;
 			VersionString = "1.0.0.0";
 			IpAddress = null;
