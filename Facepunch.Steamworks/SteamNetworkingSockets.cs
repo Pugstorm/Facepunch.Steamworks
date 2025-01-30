@@ -352,5 +352,10 @@ namespace Steamworks
 			var pDetails = new SteamNetAuthenticationStatus_t();
 			return Internal.GetAuthenticationStatus(ref pDetails);
 		}
+
+		public static void RunCallbacks()
+		{
+			Internal.RunCallbacks();
+		}
 	}
 }
