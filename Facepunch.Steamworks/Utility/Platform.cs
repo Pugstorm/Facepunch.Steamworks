@@ -12,13 +12,21 @@ namespace Steamworks
     {
 #if PLATFORM_WIN64
 		public const int StructPlatformPackSize = 8;
+#if GAME_NETWORKING_SOCKETS
+		public const string LibraryName = "GameNetworkingSockets";
+#else
 		public const string LibraryName = "steam_api64";
+#endif
 #elif PLATFORM_WIN32
 		public const int StructPlatformPackSize = 8;
 		public const string LibraryName = "steam_api";
 #elif PLATFORM_POSIX
 		public const int StructPlatformPackSize = 4;
+#if GAME_NETWORKING_SOCKETS
+		public const string LibraryName = "GameNetworkingSockets";
+#else
 		public const string LibraryName = "libsteam_api";
+#endif
 #endif
 
 		public const CallingConvention CC = CallingConvention.Cdecl;

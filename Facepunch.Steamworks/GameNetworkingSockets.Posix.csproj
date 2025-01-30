@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<AssemblyName>GameNetworkingSockets.Posix</AssemblyName>
+		<DefineConstants>$(DefineConstants);PLATFORM_POSIX;GAME_NETWORKING_SOCKETS</DefineConstants>
+		<TargetFrameworks>net6.0;netstandard2.0;netstandard2.1</TargetFrameworks>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<LangVersion>10</LangVersion>	
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<RootNamespace>Steamworks</RootNamespace>
+	</PropertyGroup>
+
+	<Import Project="Facepunch.Steamworks.targets" />
+
+</Project>
