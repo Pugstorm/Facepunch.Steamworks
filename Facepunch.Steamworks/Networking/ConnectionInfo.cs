@@ -41,5 +41,10 @@ namespace Steamworks.Data
 		/// Basic cause of the connection termination or problem.
 		/// </summary>
 		public NetConnectionEnd EndReason => (NetConnectionEnd)endReason;
+
+		public override string ToString()
+		{
+			return $"State: {State}\nArress: {address}";
+		}
 	}
 }

@@ -5,7 +5,6 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Steamworks.Data;
-using Debug = UnityEngine.Debug;
 
 namespace Steamworks
 {
@@ -76,7 +75,6 @@ namespace Steamworks
 		
 		/// <summary>
 		/// Initialize the steam client with only essential functionalities for multiplayer.
-		/// If <paramref name="asyncCallbacks"/> is false you need to call <see cref="RunCallbacks"/> manually every frame.
 		/// </summary>
 		public static void InitEssentials( uint appid)
 		{

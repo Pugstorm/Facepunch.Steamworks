@@ -4,7 +4,6 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Steamworks.Data;
-using UnityEngine;
 
 namespace Steamworks
 {
@@ -417,18 +416,11 @@ namespace Steamworks
 			}
 		}*/
 
-#endregion
+		#endregion
 
-		public static void SetGlobalCallback_SteamNetConnectionStatusChanged(FnSteamNetConnectionStatusChanged fnCallback )
+		internal static bool SetGlobalCallback_SteamNetConnectionStatusChanged(FnSteamNetConnectionStatusChanged fnCallback )
 		{
-			if (Internal.SetGlobalCallback_SteamNetConnectionStatusChanged(fnCallback))
-			{
-				Debug.Log($"SteamNetworkingUtils.{nameof(SetGlobalCallback_SteamNetConnectionStatusChanged)}: Set callback successfully");
-			}
-			else
-			{
-				Debug.LogError($"SteamNetworkingUtils.{nameof(SetGlobalCallback_SteamNetConnectionStatusChanged)}: Set callback failed");
-			}
+			return Internal.SetGlobalCallback_SteamNetConnectionStatusChanged(fnCallback);
 		}
 	}
 }

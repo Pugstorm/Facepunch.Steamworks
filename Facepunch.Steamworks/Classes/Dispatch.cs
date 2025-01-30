@@ -345,8 +345,7 @@ namespace Steamworks
 		/// is hooked to callback that Game Networking Socket does have to imitate same flow as Steam Dispatch.
 		/// </summary>
 		/// <param name="netConnectionStatus">The data for the change status.</param>
-		/// <param name="isServer">Is the user server or not</param>
-		public static void InvokeWithoutDispatcher(ref SteamNetConnectionStatusChangedCallback_t netConnectionStatus)
+		internal static void InvokeWithoutDispatcher(ref SteamNetConnectionStatusChangedCallback_t netConnectionStatus)
 		{
 			if ( Callbacks.TryGetValue( netConnectionStatus.CallbackType, out var list ) )
 			{
