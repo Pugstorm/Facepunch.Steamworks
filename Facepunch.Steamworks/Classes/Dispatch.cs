@@ -63,14 +63,23 @@ namespace Steamworks
 
 		internal static HSteamPipe ClientPipe { get; set; }
 		internal static HSteamPipe ServerPipe { get; set; }
+		private static bool _isServer;
 
 		/// <summary>
 		/// This gets called from Client/Server Init
 		/// It's important to switch to the manual dispatcher
 		/// </summary>
-		internal static void Init()
+		internal static void Init(bool isServer, bool useDispatcher = true)
 		{
-			SteamAPI_ManualDispatch_Init();
+			_isServer = isServer;
+			if (useDispatcher)
+			{
+				SteamAPI_ManualDispatch_Init();
+			}
+			else
+			{
+				SteamNetworkingUtils.SetGlobalCallback_SteamNetConnectionStatusChanged(InvokeWithoutDispatcher);
+			}
 		}
 
 		/// <summary>
@@ -276,13 +285,13 @@ namespace Steamworks
 			};
 		}
 
-		struct Callback
+		public struct Callback
 		{
 			public Action<IntPtr> action;
 			public bool server;
 		}
 
-		static Dictionary<CallbackType, List<Callback>> Callbacks = new Dictionary<CallbackType, List<Callback>>();
+		internal static Dictionary<CallbackType, List<Callback>> Callbacks = new Dictionary<CallbackType, List<Callback>>();
 
 		/// <summary>
 		/// Install a global callback. The passed function will get called if it's all good.
@@ -329,6 +338,43 @@ namespace Steamworks
 
 			ResultCallbacks = ResultCallbacks.Where( x => x.Value.server )
 											 .ToDictionary( x => x.Key, x => x.Value );
+		}
+
+		/// <summary>
+		/// As the game networking sockets doesn't support the same Dispatch code as Steam itself, InvokeWithoutDispatcher
+		/// is hooked to callback that Game Networking Socket does have to imitate same flow as Steam Dispatch.
+		/// </summary>
+		/// <param name="netConnectionStatus">The data for the change status.</param>
+		/// <param name="isServer">Is the user server or not</param>
+		public static void InvokeWithoutDispatcher(ref SteamNetConnectionStatusChangedCallback_t netConnectionStatus)
+		{
+			if ( Callbacks.TryGetValue( netConnectionStatus.CallbackType, out var list ) )
+			{
+				List<Action<IntPtr>> actionsToCall = new List<Action<IntPtr>>();
+
+				foreach ( var item in list )
+				{
+					if ( item.server != _isServer )
+						continue;
+
+					actionsToCall.Add( item.action );
+				}
+				
+				//To keep the most of the flow same, turn into pointer and pass on to normal dispatch code.
+				IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(SteamNetConnectionStatusChangedCallback_t)));
+
+				// Copy struct to unmanaged memory
+				Marshal.StructureToPtr(netConnectionStatus, ptr, false);
+
+				foreach ( var action in actionsToCall )
+				{
+					action?.Invoke(ptr);
+				}
+
+				actionsToCall.Clear();
+				
+				Marshal.FreeHGlobal(ptr);
+			}
 		}
 	}
 }

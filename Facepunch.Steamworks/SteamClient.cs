@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Steamworks.Data;
+using Debug = UnityEngine.Debug;
 
 namespace Steamworks
 {
@@ -36,7 +38,7 @@ namespace Steamworks
 			// Dispatch is responsible for pumping the
 			// event loop.
 			//
-			Dispatch.Init();
+			Dispatch.Init(false);
 			Dispatch.ClientPipe = SteamAPI.GetHSteamPipe();
 
 			AddInterface<SteamApps>();
@@ -70,6 +72,35 @@ namespace Steamworks
 				//
 				Dispatch.LoopClientAsync();
 			}
+		}
+		
+		/// <summary>
+		/// Initialize the steam client with only essential functionalities for multiplayer.
+		/// If <paramref name="asyncCallbacks"/> is false you need to call <see cref="RunCallbacks"/> manually every frame.
+		/// </summary>
+		public static void InitEssentials( uint appid)
+		{
+			if ( initialized )
+				throw new System.Exception( "Calling SteamClient.Init but is already initialized" );
+
+			System.Environment.SetEnvironmentVariable( "SteamAppId", appid.ToString() );
+			System.Environment.SetEnvironmentVariable( "SteamGameId", appid.ToString() );
+
+			//In essentials, initializing the SteamAPI fails, so lets continue without
+			//SteamAPI.Init()
+
+			AppId = appid;
+
+			initialized = true;
+
+			AddInterface<SteamNetworkingSockets>();
+			AddInterface<SteamNetworkingUtils>();
+			
+			//Uses dispatch logic without the Steam Dispatcher by hooking straight to SteamNetworkingSockets.
+			//Needs to be initialized AFTER adding SteamNetworkingSockets interface.
+			Dispatch.Init(false, false);
+
+			initialized = openInterfaces.Count > 0;
 		}
 
 		internal static void AddInterface<T>() where T : SteamClass, new()

@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Steamworks.Data;
+using UnityEngine;
 
 namespace Steamworks
 {
@@ -102,7 +103,7 @@ namespace Steamworks
 			// Dispatch is responsible for pumping the
 			// event loop.
 			//
-			Dispatch.Init();
+			Dispatch.Init(true);
 			Dispatch.ServerPipe = SteamGameServer.GetHSteamPipe();
 
 			AddInterface<SteamServer>();
@@ -128,6 +129,51 @@ namespace Steamworks
 			GameDescription = init.GameDescription;
 			Passworded = false;
 			DedicatedServer = init.DedicatedServer;
+
+			if ( asyncCallbacks )
+			{
+				//
+				// This will keep looping in the background every 16 ms
+				// until we shut down.
+				//
+				Dispatch.LoopServerAsync();
+			}
+		}
+		
+		/// <summary>
+		/// Initialize the steam server with whatever is essential for it to work.
+		/// If <paramref name="asyncCallbacks"/> is <see langword="false"/> you need to call <see cref="RunCallbacks"/> manually every frame.
+		/// </summary>
+		public static void InitEssential( AppId appid, SteamServerInit init, bool asyncCallbacks = true )
+		{
+			if ( IsValid )
+				throw new System.Exception( "Calling SteamServer.Init but is already initialized" );
+
+			uint ipaddress = 0; // Any Port
+
+			if ( init.IpAddress != null )
+				ipaddress = Utility.IpToInt32( init.IpAddress );
+
+			System.Environment.SetEnvironmentVariable( "SteamAppId", appid.ToString() );
+			System.Environment.SetEnvironmentVariable( "SteamGameId", appid.ToString() );
+
+			if ( init.Secure && !init.Authenticated )
+			{
+				throw new System.Exception( "Secure implies Authenticated" );
+			}
+			
+			int serverMode = 1;
+			if ( init.Authenticated )
+			{
+				serverMode = init.Secure ? 3 : 2;
+			}
+
+			AddInterface<SteamNetworkingUtils>();
+			AddInterface<SteamNetworkingSockets>();
+
+			//Uses dispatch logic without the Steam Dispatcher by hooking straight to SteamNetworkingSockets.
+			//Needs to be initialized AFTER adding SteamNetworkingSockets interface.
+			Dispatch.Init(true, false);
 
 			if ( asyncCallbacks )
 			{
