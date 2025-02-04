@@ -12,6 +12,7 @@ namespace Steamworks
 	/// </summary>
 	public partial class SteamServer : SteamServerClass<SteamServer>
 	{
+		static bool initialized = false;
 		internal static ISteamGameServer Internal => Interface as ISteamGameServer;
 
 		internal override bool InitializeInterface( bool server )
@@ -23,8 +24,12 @@ namespace Steamworks
 
 			return true;
 		}
-
+#if GAME_NETWORKING_SOCKETS
+		//GameNetworkingSockets don't initialize the server same way as Steam, so use initialized to see if server is valid or not.
+		public static bool IsValid => initialized;
+#else
 		public static bool IsValid => Internal != null && Internal.IsValid;
+#endif
 
 		internal static void InstallEvents()
 		{
@@ -98,6 +103,8 @@ namespace Steamworks
 				throw new System.Exception( $"InitGameServer returned false ({ipaddress},{0},{init.GamePort},{init.QueryPort},{serverMode},\"{init.VersionString}\")" );
 			}
 
+			initialized = true;
+
 			//
 			// Dispatch is responsible for pumping the
 			// event loop.
@@ -160,6 +167,8 @@ namespace Steamworks
 			{
 				throw new System.Exception( "Secure implies Authenticated" );
 			}
+
+			initialized = true;
 			
 			int serverMode = 1;
 			if ( init.Authenticated )
