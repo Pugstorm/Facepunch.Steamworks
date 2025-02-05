@@ -492,5 +492,13 @@ namespace Steamworks
 			return returnValue;
 		}
 		
+		#region FunctionMeta
+		[DllImport( Platform.LibraryName, EntryPoint = "SteamAPI_ISteamNetworkingUtils_SetAppID", CallingConvention = Platform.CC)]
+		private static extern IntPtr _SetAppID( IntPtr self, uint appID );
+		#endregion
+		internal void SetAppID( uint appID )
+		{
+			_SetAppID( Self, appID );
+		}
 	}
 }

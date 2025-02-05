@@ -427,5 +427,10 @@ namespace Steamworks
 		{
 			return Internal.SetGlobalConfigValueInt32( eValue, val );
 		}
+
+		internal static void SetAppID( uint appID )
+		{
+			Internal.SetAppID( appID );
+		}
 	}
 }
