@@ -179,6 +179,9 @@ namespace Steamworks
 			AddInterface<SteamNetworkingUtils>();
 			AddInterface<SteamNetworkingSockets>();
 
+			//Since non-steam platforms can't use authentication, so disable it.
+			SteamNetworkingUtils.SetGlobalConfigValueInt32( NetConfig.IP_AllowWithoutAuth, 1 );
+			
 			//Uses dispatch logic without the Steam Dispatcher by hooking straight to SteamNetworkingSockets.
 			//Needs to be initialized AFTER adding SteamNetworkingSockets interface.
 			Dispatch.Init(true, false);

@@ -422,5 +422,10 @@ namespace Steamworks
 		{
 			return Internal.SetGlobalCallback_SteamNetConnectionStatusChanged(fnCallback);
 		}
+
+		internal static bool SetGlobalConfigValueInt32(NetConfig eValue, int val)
+		{
+			return Internal.SetGlobalConfigValueInt32( eValue, val );
+		}
 	}
 }
