@@ -150,7 +150,7 @@ namespace Steamworks
 		/// Initialize the steam server with whatever is essential for it to work.
 		/// If <paramref name="asyncCallbacks"/> is <see langword="false"/> you need to call <see cref="RunCallbacks"/> manually every frame.
 		/// </summary>
-		public static void InitEssential( AppId appid, SteamServerInit init, bool asyncCallbacks = true )
+		public static void InitEssentials( AppId appid, SteamServerInit init, bool asyncCallbacks = true )
 		{
 			if ( IsValid )
 				throw new System.Exception( "Calling SteamServer.Init but is already initialized" );
