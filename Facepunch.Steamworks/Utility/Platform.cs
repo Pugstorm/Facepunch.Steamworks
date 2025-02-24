@@ -23,7 +23,7 @@ namespace Steamworks
 #elif PLATFORM_POSIX
 		public const int StructPlatformPackSize = 4;
 #if GAME_NETWORKING_SOCKETS
-		public const string LibraryName = "GameNetworkingSockets";
+		public const string LibraryName = "libGameNetworkingSockets";
 #else
 		public const string LibraryName = "libsteam_api";
 #endif
