@@ -150,6 +150,16 @@ namespace Steamworks
 			SteamAPI.Shutdown();
 		}
 
+		/// <summary>
+		/// Shuts down only the required parts of the steam client.
+		/// </summary>
+		public static void ShutdownEssentials()
+		{
+			if ( !IsValid ) return;
+
+			Cleanup();
+		}
+
 		internal static void Cleanup()
 		{
 			Dispatch.ShutdownClient();
