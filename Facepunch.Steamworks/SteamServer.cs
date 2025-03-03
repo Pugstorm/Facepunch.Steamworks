@@ -155,11 +155,6 @@ namespace Steamworks
 			if ( IsValid )
 				throw new System.Exception( "Calling SteamServer.Init but is already initialized" );
 
-			uint ipaddress = 0; // Any Port
-
-			if ( init.IpAddress != null )
-				ipaddress = Utility.IpToInt32( init.IpAddress );
-
 			System.Environment.SetEnvironmentVariable( "SteamAppId", appid.ToString() );
 			System.Environment.SetEnvironmentVariable( "SteamGameId", appid.ToString() );
 
@@ -169,12 +164,6 @@ namespace Steamworks
 			}
 
 			initialized = true;
-			
-			int serverMode = 1;
-			if ( init.Authenticated )
-			{
-				serverMode = init.Secure ? 3 : 2;
-			}
 
 			AddInterface<SteamNetworkingUtils>();
 			AddInterface<SteamNetworkingSockets>();
