@@ -14,13 +14,24 @@ namespace Steamworks
 		{
 			SetupInterface( IsGameServer );
 		}
-		
+
+		internal override void ShutdownInterface()
+		{
+#if GAME_NETWORKING_SOCKETS
+			KillNetworkingSockets();
+#endif
+			base.ShutdownInterface();
+		}
+
 		[DllImport( Platform.LibraryName, EntryPoint = "SteamAPI_SteamNetworkingSockets_SteamAPI_v012", CallingConvention = Platform.CC)]
 		internal static extern IntPtr SteamAPI_SteamNetworkingSockets_SteamAPI_v012();
 		public override IntPtr GetUserInterfacePointer() => SteamAPI_SteamNetworkingSockets_SteamAPI_v012();
 		[DllImport( Platform.LibraryName, EntryPoint = "SteamAPI_SteamGameServerNetworkingSockets_SteamAPI_v012", CallingConvention = Platform.CC)]
 		internal static extern IntPtr SteamAPI_SteamGameServerNetworkingSockets_SteamAPI_v012();
 		public override IntPtr GetServerInterfacePointer() => SteamAPI_SteamGameServerNetworkingSockets_SteamAPI_v012();
+		[DllImport( Platform.LibraryName, EntryPoint = "GameNetworkingSockets_Kill", CallingConvention = Platform.CC)]
+		internal static extern IntPtr GameNetworkingSockets_Kill();
+		public static IntPtr KillNetworkingSockets() => GameNetworkingSockets_Kill();
 		
 		
 		#region FunctionMeta

@@ -47,7 +47,7 @@ namespace Steamworks
 			}
 		}
 
-		internal void ShutdownInterface()
+		internal virtual void ShutdownInterface()
 		{
 			Self = IntPtr.Zero;
 		}

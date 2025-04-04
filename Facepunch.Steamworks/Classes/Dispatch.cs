@@ -64,6 +64,7 @@ namespace Steamworks
 		internal static HSteamPipe ClientPipe { get; set; }
 		internal static HSteamPipe ServerPipe { get; set; }
 		private static bool _isServer;
+		private static bool _useDispatcher; 
 
 		/// <summary>
 		/// This gets called from Client/Server Init
@@ -316,6 +317,11 @@ namespace Steamworks
 
 		internal static void ShutdownServer()
 		{
+			if (_useDispatcher)
+			{
+				SteamNetworkingUtils.SetGlobalCallback_SteamNetConnectionStatusChanged(null);
+			}
+			
 			ServerPipe = 0;
 
 			foreach ( var callback in Callbacks )
@@ -329,6 +335,11 @@ namespace Steamworks
 
 		internal static void ShutdownClient()
 		{
+			if (_useDispatcher)
+			{
+				SteamNetworkingUtils.SetGlobalCallback_SteamNetConnectionStatusChanged(null);
+			}
+			
 			ClientPipe = 0;
 
 			foreach ( var callback in Callbacks )
