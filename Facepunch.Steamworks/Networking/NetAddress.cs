@@ -69,6 +69,13 @@ namespace Steamworks.Data
 				InternalSetIPv4( ref local, Utility.IpToInt32( address ), port );
 				return local;
 			}
+			else if ( address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetworkV6 )
+			{
+				var local = Cleared;
+				var value = address.GetAddressBytes();
+				InternalSetIPv6( ref local, value, port );
+				return local;
+			}
 
 			throw new System.NotImplementedException( "Oops - no IPV6 support yet?" );
 		}

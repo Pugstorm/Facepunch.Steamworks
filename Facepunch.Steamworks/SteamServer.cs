@@ -78,7 +78,7 @@ namespace Steamworks
 
 			uint ipaddress = 0; // Any Port
 
-			if ( init.IpAddress != null )
+			if ( init.IpAddress != null && init.IpAddress.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
 				ipaddress = Utility.IpToInt32( init.IpAddress );
 
 			System.Environment.SetEnvironmentVariable( "SteamAppId", appid.ToString() );
